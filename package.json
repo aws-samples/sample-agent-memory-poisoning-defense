@@ -1,0 +1,23 @@
+{
+  "name": "agentcore-memory-poisoning-defense",
+  "version": "1.0.0",
+  "description": "Multi-layer write validation architecture to defend against memory poisoning in Amazon Bedrock AgentCore",
+  "main": "src/memory-validator.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "bash test-payloads/test-local.sh"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.600.0",
+    "@aws-sdk/client-dynamodb": "^3.600.0",
+    "@aws-sdk/client-sns": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.600.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.140",
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  },
+  "author": "Tarun Kumar (tarrych@)",
+  "license": "MIT-0"
+}
