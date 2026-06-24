@@ -1,0 +1,141 @@
+<mxfile host="app.diagrams.net" modified="2026-06-17T07:00:00.000Z" agent="5.0" version="24.0.0" type="device">
+  <diagram id="memory-poisoning-defense" name="Architecture">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;Defend Against Memory Poisoning in Amazon Bedrock AgentCore&lt;/b&gt;&lt;br&gt;Multi-Layer Write Validation Architecture" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="450" y="20" width="700" height="50" as="geometry" />
+        </mxCell>
+        <!-- Agent Runtime Box -->
+        <mxCell id="runtime-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F4FD;strokeColor=#232F3E;strokeWidth=2;dashed=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="80" y="90" width="380" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="runtime-label" value="&lt;b&gt;AgentCore Runtime&lt;/b&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;fontColor=#232F3E;" vertex="1" parent="1">
+          <mxGeometry x="90" y="95" width="140" height="25" as="geometry" />
+        </mxCell>
+        <!-- Agent -->
+        <mxCell id="agent" value="&lt;b&gt;AI Agent&lt;/b&gt;&lt;br&gt;(Strands / LangGraph)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF9900;fontColor=#FFFFFF;strokeColor=#FF9900;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="120" y="140" width="160" height="60" as="geometry" />
+        </mxCell>
+        <!-- Memory Write Request -->
+        <mxCell id="mem-write" value="&lt;b&gt;Memory Write&lt;/b&gt;&lt;br&gt;Request" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#232F3E;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="220" width="160" height="50" as="geometry" />
+        </mxCell>
+        <!-- Arrow Agent to Memory Write -->
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#232F3E;strokeWidth=2;" edge="1" source="agent" target="mem-write" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- AgentCore Gateway -->
+        <mxCell id="gateway" value="&lt;b&gt;AgentCore Gateway&lt;/b&gt;&lt;br&gt;Pre-Write Interceptor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3F8624;fontColor=#FFFFFF;strokeColor=#3F8624;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="340" y="220" width="200" height="60" as="geometry" />
+        </mxCell>
+        <!-- Arrow Write to Gateway -->
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#232F3E;strokeWidth=2;" edge="1" source="mem-write" target="gateway" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Validation Lambda Box -->
+        <mxCell id="lambda-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#FF9900;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="580" y="100" width="420" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="lambda-label" value="&lt;b&gt;Validation Lambda&lt;/b&gt; (memory-validator)" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=11;fontColor=#FF9900;" vertex="1" parent="1">
+          <mxGeometry x="590" y="105" width="260" height="25" as="geometry" />
+        </mxCell>
+        <!-- Signal 1 -->
+        <mxCell id="signal1" value="&lt;b&gt;Signal 1&lt;/b&gt;&lt;br&gt;Semantic Drift&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:9px&quot;&gt;Titan Embeddings&lt;br&gt;Cosine Similarity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF9900;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="600" y="140" width="170" height="60" as="geometry" />
+        </mxCell>
+        <!-- Signal 2 -->
+        <mxCell id="signal2" value="&lt;b&gt;Signal 2&lt;/b&gt;&lt;br&gt;Instruction Pattern&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:9px&quot;&gt;14 Regex Patterns&lt;br&gt;Weight: 35%&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF9900;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="810" y="140" width="170" height="60" as="geometry" />
+        </mxCell>
+        <!-- Signal 3 -->
+        <mxCell id="signal3" value="&lt;b&gt;Signal 3&lt;/b&gt;&lt;br&gt;Namespace Boundary&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:9px&quot;&gt;system/ shared/ user/&lt;br&gt;Weight: 20%&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF9900;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="600" y="220" width="170" height="60" as="geometry" />
+        </mxCell>
+        <!-- Signal 4 -->
+        <mxCell id="signal4" value="&lt;b&gt;Signal 4&lt;/b&gt;&lt;br&gt;Write-Rate Anomaly&lt;br&gt;&lt;font color=&quot;#666666&quot; style=&quot;font-size:9px&quot;&gt;DynamoDB Counter&lt;br&gt;Weight: 15%&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF9900;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="810" y="220" width="170" height="60" as="geometry" />
+        </mxCell>
+        <!-- Decision Engine -->
+        <mxCell id="decision" value="&lt;b&gt;Decision Engine&lt;/b&gt;&lt;br&gt;Weighted Score → Action" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;fontColor=#FFFFFF;strokeColor=#232F3E;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="680" y="310" width="220" height="50" as="geometry" />
+        </mxCell>
+        <!-- Arrow Gateway to Lambda -->
+        <mxCell id="arrow3" value="pre-write hook" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#FF9900;strokeWidth=2;fontSize=9;labelBackgroundColor=#FFFFFF;" edge="1" source="gateway" target="lambda-box" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <!-- ALLOW Box -->
+        <mxCell id="allow" value="&lt;b&gt;ALLOW&lt;/b&gt;&lt;br&gt;Score &lt; 40&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Write to target namespace&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4CAF50;fontColor=#FFFFFF;strokeColor=#4CAF50;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="430" width="160" height="70" as="geometry" />
+        </mxCell>
+        <!-- QUARANTINE Box -->
+        <mxCell id="quarantine" value="&lt;b&gt;QUARANTINE&lt;/b&gt;&lt;br&gt;Score 40–70&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Redirect to isolated namespace&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF9800;fontColor=#FFFFFF;strokeColor=#FF9800;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="680" y="430" width="180" height="70" as="geometry" />
+        </mxCell>
+        <!-- DENY Box -->
+        <mxCell id="deny" value="&lt;b&gt;DENY&lt;/b&gt;&lt;br&gt;Score &gt; 70&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Block + SNS Alert&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F44336;fontColor=#FFFFFF;strokeColor=#F44336;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="900" y="430" width="160" height="70" as="geometry" />
+        </mxCell>
+        <!-- Arrows from Decision to outcomes -->
+        <mxCell id="arrow-allow" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#4CAF50;strokeWidth=2;" edge="1" source="decision" target="allow" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-quarantine" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#FF9800;strokeWidth=2;" edge="1" source="decision" target="quarantine" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-deny" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#F44336;strokeWidth=2;" edge="1" source="decision" target="deny" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- AgentCore Memory -->
+        <mxCell id="memory" value="&lt;b&gt;AgentCore Memory&lt;/b&gt;&lt;br&gt;user/{userId}/ namespace" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#E8F4FD;strokeColor=#147EBA;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="500" y="550" width="160" height="70" as="geometry" />
+        </mxCell>
+        <!-- Quarantine Namespace -->
+        <mxCell id="quar-ns" value="&lt;b&gt;Quarantine Namespace&lt;/b&gt;&lt;br&gt;quarantine/{agentId}/" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#FFF3E0;strokeColor=#FF9800;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="550" width="170" height="70" as="geometry" />
+        </mxCell>
+        <!-- SNS Alert -->
+        <mxCell id="sns" value="&lt;b&gt;Amazon SNS&lt;/b&gt;&lt;br&gt;Security Alert" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DD344C;fontColor=#FFFFFF;strokeColor=#DD344C;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="920" y="560" width="130" height="50" as="geometry" />
+        </mxCell>
+        <!-- Arrows to destinations -->
+        <mxCell id="arrow-to-mem" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#4CAF50;strokeWidth=2;" edge="1" source="allow" target="memory" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-to-quar" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#FF9800;strokeWidth=2;" edge="1" source="quarantine" target="quar-ns" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-to-sns" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#F44336;strokeWidth=2;" edge="1" source="deny" target="sns" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- DynamoDB -->
+        <mxCell id="dynamo" value="&lt;b&gt;DynamoDB&lt;/b&gt;&lt;br&gt;Write-Rate +&lt;br&gt;Audit Log" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8;fillColor=#3B48CC;fontColor=#FFFFFF;strokeColor=#3B48CC;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="190" width="120" height="70" as="geometry" />
+        </mxCell>
+        <!-- Bedrock Titan -->
+        <mxCell id="titan" value="&lt;b&gt;Amazon Bedrock&lt;/b&gt;&lt;br&gt;Titan Embeddings v2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6B48FF;fontColor=#FFFFFF;strokeColor=#6B48FF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="110" width="140" height="50" as="geometry" />
+        </mxCell>
+        <!-- Cedar Policy -->
+        <mxCell id="cedar" value="&lt;b&gt;AgentCore Policy&lt;/b&gt;&lt;br&gt;Cedar (Backup)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#147EBA;fontColor=#FFFFFF;strokeColor=#147EBA;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="340" y="310" width="150" height="50" as="geometry" />
+        </mxCell>
+        <!-- Latency annotation -->
+        <mxCell id="latency" value="&lt;font color=&quot;#666666&quot;&gt;Total validation latency: &lt;b&gt;~26ms&lt;/b&gt; (warm path)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="660" y="375" width="240" height="25" as="geometry" />
+        </mxCell>
+        <!-- Human Review -->
+        <mxCell id="review" value="&lt;b&gt;Async Human Review&lt;/b&gt;&lt;br&gt;(via SNS + Dashboard)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FF9800;strokeWidth=1;dashed=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="650" width="170" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-review" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#FF9800;strokeWidth=1;dashed=1;" edge="1" source="quar-ns" target="review" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

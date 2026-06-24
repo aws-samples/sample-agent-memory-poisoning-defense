@@ -56,15 +56,15 @@ interface SignalScores {
 // --- Configuration ---
 
 const THRESHOLDS = {
-  ALLOW_MAX: 40,
-  QUARANTINE_MAX: 70,
+  ALLOW_MAX: 35,
+  QUARANTINE_MAX: 60,
 } as const;
 
 const WEIGHTS = {
-  semanticDrift: 0.3,
-  instructionPattern: 0.35,
-  namespaceBoundary: 0.2,
-  writeRateAnomaly: 0.15,
+  semanticDrift: 0.4,
+  instructionPattern: 0.25,
+  namespaceBoundary: 0.25,
+  writeRateAnomaly: 0.1,
 } as const;
 
 const PROTECTED_NAMESPACES = ["system/", "system"];
