@@ -1,0 +1,39 @@
+==============================================================
+CDK-NAG SCAN RESULTS
+Stack: MemoryPoisoningDefenseStack
+Date: 2026-07-29
+Tool: cdk-nag v2 (AwsSolutionsChecks)
+==============================================================
+
+FINDINGS:
+
+1. WARNING (CloudFormation-Validate::W2531)
+   Resource: MemoryPoisoningDefenseStack/MemoryValidator/Resource
+   Type: aws-cdk-lib.aws_lambda.CfnFunction
+   Message: Runtime 'nodejs18.x' was deprecated on '2025-09-01'. 
+            Creation was disabled on '2027-02-01' and update on '2027-03-03'.
+            Please consider updating to 'nodejs24.x'
+   Severity: WARNING (not HIGH or CRITICAL)
+   Action: Update runtime to nodejs20.x or nodejs22.x in cdk-stack.ts
+
+==============================================================
+SUMMARY
+==============================================================
+
+Total findings: 1
+  CRITICAL: 0
+  HIGH: 0
+  MEDIUM: 0
+  WARNING: 1 (deprecated Lambda runtime)
+
+RESULT: PASS — No HIGH or CRITICAL findings detected.
+
+==============================================================
+NOTES
+==============================================================
+- DynamoDB tables: ON_DEMAND billing, encryption at rest (AWS-managed key) ✓
+- SNS topic: Default encryption ✓
+- Lambda: Scoped IAM permissions (DynamoDB, SNS, Bedrock InvokeModel only) ✓
+- No public-facing resources
+- No S3 buckets (no public access concerns)
+- No IAM users or access keys

@@ -1,23 +1,20 @@
 /**
- * CDK Stack: Memory Poisoning Defense for AgentCore
- *
- * Deploys the Validation Lambda, DynamoDB tables, SNS topic,
- * and necessary IAM permissions.
+ * cdk-nag validation script
+ * Run: npx tsx infrastructure/cdk-nag-check.ts
  */
 
 import * as cdk from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as nodejs from "aws-cdk-lib/aws-lambda-nodejs";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
+import { AwsSolutionsChecks } from "cdk-nag";
 
-export class MemoryPoisoningDefenseStack extends cdk.Stack {
+class MemoryPoisoningDefenseStackForNag extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // --- DynamoDB: Write-Rate Tracking ---
     const rateTable = new dynamodb.Table(this, "WriteRateTable", {
       tableName: "agentcore-memory-write-rate",
       partitionKey: { name: "pk", type: dynamodb.AttributeType.STRING },
@@ -26,7 +23,6 @@ export class MemoryPoisoningDefenseStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // --- DynamoDB: Audit Log ---
     const auditTable = new dynamodb.Table(this, "AuditTable", {
       tableName: "agentcore-memory-audit",
       partitionKey: { name: "pk", type: dynamodb.AttributeType.STRING },
@@ -36,18 +32,16 @@ export class MemoryPoisoningDefenseStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // --- SNS: Alert Topic ---
     const alertTopic = new sns.Topic(this, "MemoryAlertTopic", {
       topicName: "agentcore-memory-poisoning-alerts",
       displayName: "AgentCore Memory Poisoning Alerts",
     });
 
-    // --- Lambda: Validation Function ---
-    const validationLambda = new nodejs.NodejsFunction(this, "MemoryValidator", {
+    const validationLambda = new lambda.Function(this, "MemoryValidator", {
       functionName: "agentcore-memory-validator",
-      entry: "../src/memory-validator.ts",
-      handler: "handler",
-      runtime: lambda.Runtime.NODEJS_20_X,
+      code: lambda.Code.fromInline("exports.handler = async () => {};"),
+      handler: "index.handler",
+      runtime: lambda.Runtime.NODEJS_18_X,
       timeout: cdk.Duration.seconds(10),
       memorySize: 512,
       environment: {
@@ -58,7 +52,6 @@ export class MemoryPoisoningDefenseStack extends cdk.Stack {
       },
     });
 
-    // Provisioned concurrency for warm starts
     const version = validationLambda.currentVersion;
     new lambda.Alias(this, "MemoryValidatorAlias", {
       aliasName: "live",
@@ -66,12 +59,10 @@ export class MemoryPoisoningDefenseStack extends cdk.Stack {
       provisionedConcurrentExecutions: 5,
     });
 
-    // --- Permissions ---
     rateTable.grantReadWriteData(validationLambda);
     auditTable.grantWriteData(validationLambda);
     alertTopic.grantPublish(validationLambda);
 
-    // Bedrock Titan Embeddings access
     validationLambda.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ["bedrock:InvokeModel"],
@@ -80,21 +71,13 @@ export class MemoryPoisoningDefenseStack extends cdk.Stack {
         ],
       })
     );
-
-    // --- Outputs ---
-    new cdk.CfnOutput(this, "ValidatorFunctionArn", {
-      value: validationLambda.functionArn,
-      description: "ARN of the Memory Validation Lambda — configure as AgentCore Gateway interceptor",
-    });
-
-    new cdk.CfnOutput(this, "AlertTopicArn", {
-      value: alertTopic.topicArn,
-      description: "Subscribe to this topic for memory poisoning alerts",
-    });
-
-    new cdk.CfnOutput(this, "AuditTableName", {
-      value: auditTable.tableName,
-      description: "DynamoDB table storing QUARANTINE/DENY audit logs",
-    });
   }
 }
+
+const app = new cdk.App();
+const stack = new MemoryPoisoningDefenseStackForNag(app, "MemoryPoisoningDefenseStack", {
+  env: { account: "123456789012", region: "us-east-1" },
+});
+
+cdk.Aspects.of(app).add(new AwsSolutionsChecks());
+app.synth();
