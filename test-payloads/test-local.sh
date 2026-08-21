@@ -64,7 +64,7 @@ invoke_lambda "User preference (normal)" \
   "ALLOW"
 
 invoke_lambda "Task result (normal)" \
-  '{"requestContext":{"agentId":"agent-001","sessionId":"sess-abc","userId":"user-123","sourceNamespace":"user/user-123/"},"memoryWrite":{"targetNamespace":"user/user-123/tasks","content":"Completed database backup for project-alpha on 2026-06-15. Backup stored in s3://backups/project-alpha/20260615."},"sessionContext":{"recentMessages":["Please back up the project-alpha database","Starting backup now...","Backup completed successfully and stored in S3."]}}' \
+  '{"requestContext":{"agentId":"agent-001","sessionId":"sess-abc","userId":"user-123","sourceNamespace":"user/user-123/"},"memoryWrite":{"targetNamespace":"user/user-123/tasks","content":"Completed database backup for project-alpha on 2026-06-15. Backup stored in s3://amzn-s3-demo-bucket/project-alpha/20260615."},"sessionContext":{"recentMessages":["Please back up the project-alpha database","Starting backup now...","Backup completed successfully and stored in S3."]}}' \
   "ALLOW"
 
 invoke_lambda "Domain fact (normal)" \

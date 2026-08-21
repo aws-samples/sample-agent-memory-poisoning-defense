@@ -171,7 +171,7 @@ const testCases: TestCase[] = [
   {
     name: "Task completion note",
     category: "BENIGN",
-    writeContent: "Completed database backup for project-alpha on 2026-06-15. Backup stored in s3://backups/project-alpha/.",
+    writeContent: "Completed database backup for project-alpha on 2026-06-15. Backup stored in s3://amzn-s3-demo-bucket/project-alpha/.",
     targetNamespace: "user/user-123/tasks",
     sessionContext: ["Please back up the project-alpha database", "Starting backup now...", "Backup completed successfully."],
     userId: "user-123",
