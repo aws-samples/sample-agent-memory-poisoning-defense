@@ -41,7 +41,7 @@ class MemoryPoisoningDefenseStackForNag extends cdk.Stack {
       functionName: "agentcore-memory-validator",
       code: lambda.Code.fromInline("exports.handler = async () => {};"),
       handler: "index.handler",
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       timeout: cdk.Duration.seconds(10),
       memorySize: 512,
       environment: {

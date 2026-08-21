@@ -16,6 +16,9 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.140",
     "@types/node": "^20.14.0",
+    "aws-cdk-lib": "^2.266.0",
+    "cdk-nag": "^2.38.2",
+    "constructs": "^10.7.1",
     "typescript": "^5.5.0"
   },
   "author": "Tarun Kumar (tarrych@)",
